@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Data</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <style>
+       
+    </style>
+    </head>
+
+<body>
+
+
+  <input type="text" list="names"  id="myInput" placeholder="Search by name" onkeyup="myFunction()">
+
+<a href="/csv">Export</a>
+<datalist id="names">
+    {% for st in stu %}
+    <option value={{st.Student_name}}>
+    {% endfor %}
+</datalist>
+
+    <form action="" method="post">
+        {% csrf_token %}
+        From:<input type="date" name="fromdate"/>
+        To:<input type="date" name="todate"/>
+        <input type="submit" value="submit">
+        <table class="table" id="myTable">
+            <thead>
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Student_Name</th>
+                <th scope="col">Date</th>
+                <th scope="col">Time_In</th>
+                <th scope="col">Time_Out</th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for st in stu %}
+              <tr>
+                <th scope="row">{{st.id}}</th>
+                <td>{{st.Student_name}}</td>
+                <td>{{st.date}}</td>
+                <td>{{st.time_in}}</td>
+                <td>{{st.time_out}}</td>
+              </tr>
+              {% endfor %} 
+            </tbody>
+          </table>
+          <a href="{% url 'login' %}">Logout</a>
+    </form>
+   </body>
+   
+  
+<script>
+  function myFunction() {
+    var input, filter, table, tr, td , i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    table = document.getElementById("myTable");
+    tr = table.getElementsByTagName("tr");
+    for (i = 0; i < tr.length; i++) {
+      td = tr[i].getElementsByTagName("td")[0];
+      if (td) {
+        txtValue = td.textContent || td.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          tr[i].style.display = "";
+        } else {
+          tr[i].style.display = "none";
+        }
+      }       
+    }
+  }
+  </script>
+    
+    
+</html>
