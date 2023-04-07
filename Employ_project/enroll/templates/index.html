@@ -10,7 +10,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
     <style>
-       
+  
     </style>
     </head>
 
@@ -19,7 +19,7 @@
 
   <input type="text" list="names"  id="myInput" placeholder="Search by name" onkeyup="myFunction()">
 
-<a href="/csv">Export</a>
+<!-- <a href="/csv">Export</a> -->
 <datalist id="names">
     {% for st in stu %}
     <option value={{st.Student_name}}>
@@ -39,6 +39,7 @@
                 <th scope="col">Date</th>
                 <th scope="col">Time_In</th>
                 <th scope="col">Time_Out</th>
+                
               </tr>
             </thead>
             <tbody>
@@ -46,9 +47,10 @@
               <tr>
                 <th scope="row">{{st.id}}</th>
                 <td>{{st.Student_name}}</td>
-                <td>{{st.date}}</td>
+                <td>{{st.date|date:'d m y'}}</td>
                 <td>{{st.time_in}}</td>
                 <td>{{st.time_out}}</td>
+
               </tr>
               {% endfor %} 
             </tbody>

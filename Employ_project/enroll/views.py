@@ -1,8 +1,11 @@
-from django.shortcuts import render ,HttpResponseRedirect,HttpResponse
+from django.shortcuts import render
+from django.http import HttpResponseRedirect
 from .models import Student
 from django.contrib.auth import authenticate , login
 from django.contrib.auth.forms import AuthenticationForm
 import csv
+from .forms import StudentForm
+from django.contrib import messages
 
 
 
@@ -19,9 +22,9 @@ def StudentData(request):
             print(stu)
         except:
             stu=None
-        return render(request,'csv.html', {'stu': stu})
+        return render(request,'index.html', {'stu': stu})
     print(stu)
-    return render(request,'csv.html', {'stu': stu})
+    return render(request,'index.html', {'stu': stu})
   
 
 def User_login(request):
@@ -34,12 +37,33 @@ def User_login(request):
                 user = authenticate(username=uname , password=pwd)
                 if user is not None:
                     login(request,user)
-                    return HttpResponseRedirect('/home/')
+                    return HttpResponseRedirect('/st/')
         else:
             fm = AuthenticationForm()
         return render(request, 'login.html', {'form':fm})
  
- 
+
+
+def update_data(request,id):
+    if request.method=='POST':
+        pi = Student.objects.get(pk=id)
+        fm =  StudentForm(request.POST, instance=pi)
+        if fm.is_valid():
+            messages.success(request, 'update successfull')
+            fm.save()
+            fm = StudentForm()
+    else:
+        pi = Student.objects.get(pk=id)
+        fm =  StudentForm(request.POST, instance=pi)
+
+    return render(request,'update.html',{'form':fm})
+
+def delete_data(request,id):
+    if request.method=='POST':
+        pi = Student.objects.get(pk=id)
+         
+        pi.delete()
+        return HttpResponseRedirect('/st/')
 
 # def exportcsv(request):
 #     stu = Student.objects.filter()
